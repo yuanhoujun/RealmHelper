@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 		 
-	// You must ensure activity has been created
+	    // You must ensure activity has been created
         mRealmHelper = RealmHelper.get(this)
         
         // You can use all method in Realm class at here
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 </pre>
 Watch more, checkout this project , see app module. 
 
-In the project , it adds a child project **LifecycleBinder**, You can easily to achieve binding lifecycle of activity and fragment.
+In the project , it adds a child project **LifecycleBinder**, You can easily to achieve binding lifecycle of activity and fragment by using **LifecycleBinder** . It inspired by [Glide](https://github.com/bumptech/glide)
 
 For problem two, it still have not a good solution , you must be carefull when call in multiple threads
 
