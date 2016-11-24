@@ -1,4 +1,4 @@
-# Realm Helper
+# Realm helper by Kotlin
 ----
 Realm helper is aim to simplify realm database use .
 
@@ -35,3 +35,20 @@ For problem two, it still hav’nt a good solution , you must be carefull when c
 
 
 This project will keep updating, if you find some other troublesome problem, just send email: [ouyangfeng2016@gmail.com]() to me 
+
+# About me
+**笔名**: 欧阳锋
+
+**爱好**: 编程,旅游,运动
+
+**擅长**: Android/iOS/Java Web/C++/Kotlin
+
+**简书**: [关注我的简书](http://www.jianshu.com/users/db019edd34b4/latest_articles)
+
+**签名**: 做一个有理想的程序员
+
+**iOS交流群**: 468167089
+
+**Kotlin交流群**: 329673958
+
+**喜欢编程的同学,别忘了关注我的简书哦!**
