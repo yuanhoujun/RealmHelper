@@ -68,6 +68,9 @@ class RealmHelper private constructor(): LifecycleListener {
     }
 
     override fun onStart() {
+        if(null != mFragment || null != mSupportFragment) {
+            mRealm = Realm.getDefaultInstance()
+        }
     }
 
     override fun onStop() {
