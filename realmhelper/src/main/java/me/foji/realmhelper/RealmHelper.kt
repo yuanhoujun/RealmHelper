@@ -1,17 +1,18 @@
 package me.foji.realmhelper
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Fragment
 import io.realm.Realm
-import me.foji.realmhelper.lifecyclebinder.LifecycleBinder
-import me.foji.realmhelper.lifecyclebinder.LifecycleListener
+import me.foji.lifecyclebinder.LifeCycleBinder
+import me.foji.lifecyclebinder.OnLifeCycleChangedListener
 
 /**
  * Realm helper
  *
  * @author Scott Smith  @Date 2016年11月2016/11/22日 16:19
  */
-class RealmHelper private constructor(): LifecycleListener {
+class RealmHelper private constructor() {
     private var mActivity: Activity? = null
     private var mFragment: Fragment? = null
     private var mSupportFragment: android.support.v4.app.Fragment? = null
@@ -21,18 +22,40 @@ class RealmHelper private constructor(): LifecycleListener {
         fun get(activity: Activity): RealmHelper {
             val realmHelper = RealmHelper()
             realmHelper.mActivity = activity
+            LifeCycleBinder.bind(activity, object: OnLifeCycleChangedListener {
+                override fun onStart() {
 
-            LifecycleBinder.init(realmHelper.mActivity!!).callback(realmHelper).bind()
+                }
 
+                override fun onStop() {
+
+                }
+
+                override fun onDestroy() {
+                    realmHelper.mRealm?.close()
+                }
+            })
             return realmHelper
         }
 
+        @SuppressLint("NewApi")
         fun get(fragment: Fragment): RealmHelper {
             val realmHelper = RealmHelper()
             realmHelper.mFragment = fragment
 
-            LifecycleBinder.init(fragment).callback(realmHelper).bind()
+            LifeCycleBinder.bind(fragment, object: OnLifeCycleChangedListener {
+                override fun onStart() {
+                    realmHelper.mRealm = Realm.getDefaultInstance()
+                }
 
+                override fun onStop() {
+                    realmHelper.mRealm?.close()
+                }
+
+                override fun onDestroy() {
+
+                }
+            })
             return realmHelper
         }
 
@@ -40,8 +63,20 @@ class RealmHelper private constructor(): LifecycleListener {
             val realmHelper = RealmHelper()
             realmHelper.mSupportFragment = supportFragment
 
-            LifecycleBinder.init(supportFragment).callback(realmHelper).bind()
 
+            LifeCycleBinder.bind(supportFragment, object: OnLifeCycleChangedListener {
+                override fun onStart() {
+                    realmHelper.mRealm = Realm.getDefaultInstance()
+                }
+
+                override fun onStop() {
+                    realmHelper.mRealm?.close()
+                }
+
+                override fun onDestroy() {
+
+                }
+            })
             return realmHelper
         }
     }
@@ -65,23 +100,5 @@ class RealmHelper private constructor(): LifecycleListener {
             mRealm = Realm.getDefaultInstance()
         }
         return mRealm!!
-    }
-
-    override fun onStart() {
-        if(null != mFragment || null != mSupportFragment) {
-            mRealm = Realm.getDefaultInstance()
-        }
-    }
-
-    override fun onStop() {
-        if(null != mFragment || null != mSupportFragment) {
-            mRealm?.close()
-        }
-    }
-
-    override fun onDestroy() {
-        if(null != mActivity) {
-            mRealm?.close()
-        }
     }
 }
