@@ -33,6 +33,7 @@ class RealmHelper private constructor() {
 
                 override fun onDestroy() {
                     realmHelper.mRealm?.close()
+                    realmHelper.mRealm = null
                 }
             })
             return realmHelper
@@ -50,6 +51,7 @@ class RealmHelper private constructor() {
 
                 override fun onStop() {
                     realmHelper.mRealm?.close()
+                    realmHelper.mRealm = null
                 }
 
                 override fun onDestroy() {
@@ -81,8 +83,13 @@ class RealmHelper private constructor() {
         }
     }
 
-    fun <T> use(f: Realm.() -> T): T {
-        return openRealm().f()
+    fun <T> use(f: Realm.() -> T): T? {
+        val realm = openRealm()
+        if(!realm.isClosed) {
+            return realm.f()
+        } else {
+            return null
+        }
     }
 
     fun <T> use(f: Realm.() -> T , openRealm: () -> Realm = {
@@ -90,8 +97,14 @@ class RealmHelper private constructor() {
             mRealm = Realm.getDefaultInstance()
         }
         mRealm!!
-    }): T {
-        return openRealm.invoke().f()
+    }): T? {
+        val realm = openRealm.invoke()
+
+        if(!realm.isClosed) {
+            return realm.f()
+        } else {
+            return null
+        }
     }
 
     @Synchronized
